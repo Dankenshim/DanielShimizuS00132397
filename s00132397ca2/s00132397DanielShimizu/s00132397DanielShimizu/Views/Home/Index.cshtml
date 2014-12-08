@@ -15,7 +15,7 @@
                         @Html.DisplayNameFor(model => model.Title)
                     </th>
                     <th>
-                      
+
                         <a class="btn btn-xs btn-info" href="@Url.Action("Index", new { sortOrder = @ViewBag.dateOrder })">
                             @if (ViewBag.dateOrder == "ascDate")
                             {
@@ -26,7 +26,7 @@
                                 <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
 
                             }
-                            &nbsp;StartDate
+                            &nbsp;Release Date
                         </a>
                     </th>
                     <th>
@@ -40,8 +40,9 @@
                                 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
 
                             }
-                            &nbsp;Number
-                        </a></th>
+                            &nbsp;Actors/Actresses
+                        </a>
+                    </th>
                     <th></th>
                 </tr>
                 @foreach (var item in Model)
@@ -66,9 +67,9 @@
                                 }
                             </td>
                             <td>
-                              
+                                @Html.ActionLink("Edit", "Edit", new { id = item.FilmId }, new { @class = "btn btn-info btn-xs" })
                                 @Html.ActionLink("Details", "Details", new { id = item.FilmId }, new { @class = "btn btn-info btn-xs" })
-                           
+                                @Html.ActionLink("Delete", "Delete", new { id = item.FilmId }, new { @class = "btn btn-danger btn-xs" })
                             </td>
                         </tr>
                 }
@@ -77,11 +78,15 @@
         <div class="col-xs-4">
             <div id="Detail"></div>
             <div>
-                <form id="CreateFilm" hidden="">
+                <form id="CreateActor" hidden="">
                     <div class="form-group" style="margin-top: 10px">
                         <input type="hidden" name="filmId">
                         <input type="submit" value="Add" class="btn btn-xs btn-success" style="margin-top: -5px;" />
                         &nbsp;<input type="text" name="name"><span>&nbsp;to Film</span>
+                        <div style="margin:-5px 5px" class='badge alert-info'>
+                            <label><input type="radio" name="male" value="">M</label>
+                            <label><input type="radio" name="female" value="">F</label>
+                        </div>
                     </div>
                 </form>
                 <form id="EditActor" hidden="">
@@ -91,10 +96,7 @@
                         <input type="submit" value="Save" class="btn btn-xs btn-success" style="margin-top: -5px;" />
                         <input type="button" onclick="$('#EditActor').hide(); $('#CreateActor').show();" value="Cancel" class="btn btn-xs btn-warning" style="margin-top: -5px;" />
                         <input type="text" name="name" value="">
-                        <div style="margin:-5px 5px" class='badge alert-info'>
-                            <input type="radio" name="male" value="">M
-                            <input type="radio" name="female" value="">F
-                        </div>
+                        
                     </div>
                 </form>
             </div>
@@ -105,16 +107,75 @@
 @section scripts
 {
     <script>
-        $(function() { // ready event
-            toastr.info('Welcome to Daniels Ca2');    
+        $(function () {
+            toastr.info('Welcome to Daniels Ca2');
+            $('#EditActor :input[name="male"]').click(function () {
+                $('#EditActor :input[name="female"]').prop('checked', false);
+            });
+            $('#EditActor :input[name="female"]').click(function () {
+                $('#EditActor :input[name="male"]').prop('checked', false);
+            });
             @if (Model.Any())
             {
-                
+
                 <text>
-                    showActors(@Model.First().FilmId);
-                </text>
+            showActors(@Model.First().FilmId);
+            </text>
             }
         });
+        $('#CreateActor').submit(function () {
+            if ($(this).find('input[name="name"]').val() != "") {
+                $.ajax({
+                    url: '@Url.Action("CreateActor")',
+                    type: "POST",
+                    data: $(this).serialize(), 
+                    success: function () {
+                        showActor($('form').find('input[name="filmId"]').val()); 
+                        toastr.info($('form').find('input[name="name"]').val() + ' Added'); 
+                        $('form').find('input[name="name"]').val(""); 
+                    }
+                });
+            }
+            return false;
+        });
+        function showEditActor(filmId, actorId, actorName, sex) {
+            $('#EditActor').slideDown("fast");
+            $('#EditActor').show();
+            $('#CreateActor').hide();
+            $('#EditActor :input[name="actorId"]').val(actorId);
+            $('#EditActor :input[name="filmId"]').val(filmId);
+            $('#EditActor :input[name="name"]').val(actorName);
+            if (sex == 'Male') {
+                $('#EditActor :input[name="male"]').prop('checked', true);
+                $('#EditActor :input[name="female"]').prop('checked', false);
+            } else {
+                $('#EditActor :input[name="female"]').prop('checked', true);
+                $('#EditActor :input[name="male"]').prop('checked', false);
+            }
+        }
+
+        $('#EditActor').submit(function () {
+            if ($('#EditActor :input[name="male"]').prop('checked') == true) {
+                $('#EditActor :input[name="sex"]').val('male');
+            } else {
+                $('#EditActor :input[name="sex"]').val('female');
+            }
+            $.ajax({
+                url: '@Url.Action("UpdateActor")',
+                type: "POST",
+                data: $(this).serialize(),
+                success: function () {
+                    $('#EditActor').hide();
+                    showActors($('#EditActor :input[name="campId"]').val()); 
+                    toastr.info($('#EditActor :input[name="name"]').val() + ' Updated');
+                },
+                error: function (data) {
+                    $('#Detail').html('<h3>Could not update Actor record</h3>');
+                }
+            });
+            return false;
+        });
+
 
         function showActors(filmId) {
             $.ajax({
@@ -126,7 +187,7 @@
                     $('#CreateActor').hide();
                     $('#Detail').html(data);
                     $('#Detail').fadeIn("slow");
-                    $('#CreateActor').find('input[name="filmId"]').val(filmId); 
+                    $('#CreateActor').find('input[name="filmId"]').val(filmId);
                     $('#CreateActor').find('input[name="name"]').val("");
                     $('#CreateActor').fadeIn("slow");
                 },
@@ -138,7 +199,7 @@
         }
 
 
-</script>
+    </script>
 
 
 }

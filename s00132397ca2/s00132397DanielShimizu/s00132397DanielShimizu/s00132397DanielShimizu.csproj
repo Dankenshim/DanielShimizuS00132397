@@ -207,6 +207,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.superhero.css" />
+    <Content Include="Content\bootstrap.superhero.min.css" />
     <Content Include="Content\datepicker.css" />
     <Content Include="Content\datepicker3.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -369,6 +371,8 @@
     <Content Include="Views\Home\Details.cshtml" />
     <Content Include="Views\Shared\_ActorsInFilm.cshtml" />
     <Content Include="Views\Home\Create.cshtml" />
+    <Content Include="Views\Home\Delete.cshtml" />
+    <Content Include="Views\Home\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

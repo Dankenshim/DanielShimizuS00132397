@@ -30,7 +30,7 @@ namespace s00132397DanielShimizu
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/css")
-                 .Include("~/Content/bootstrap.css", "~/Content/toastr.css",
+                 .Include("~/Content/bootstrap.superhero.css", "~/Content/toastr.css",
                             "~/Content/bootstrap-datetimepicker.css"));
 
 
