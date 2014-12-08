@@ -76,6 +76,14 @@ namespace s00132397DanielShimizu.Models
                    { Name = "Mary-Louise Parker", Sex = Sex.Female },
                    new Actor()
                    {Name = "Helen Mirren", Sex= Sex.Female}
+                }},
+                new Film(){Title = "Die Hard", ReleaseDate = DateTime.Parse("15/03/1988"), Genre = Genre.Action, 
+                    Actors = new List<Actor>()             
+                {
+                new Actor()
+                    { Name = "Bruce Willis", Sex = Sex.Male},                    
+                    new Actor()
+                    {Name = "Bonnie Bedelia",Sex = Sex.Male}                   
                 }}  
                 };
             films.ForEach(flm => context.Films.Add(flm));
