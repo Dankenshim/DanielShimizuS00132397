@@ -43,6 +43,7 @@
                             &nbsp;Actors/Actresses
                         </a>
                     </th>
+                    <th><span class="btn btn-xs btn-info">Genre</span></th>
                     <th></th>
                 </tr>
                 @foreach (var item in Model)
@@ -66,6 +67,9 @@
                                     @Html.DisplayFor(modelItem => item.Actors.Count)
                                 }
                             </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Genre)
+                        </td>
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.FilmId }, new { @class = "btn btn-info btn-xs" })
                                 @Html.ActionLink("Details", "Details", new { id = item.FilmId }, new { @class = "btn btn-info btn-xs" })
@@ -166,7 +170,7 @@
                 data: $(this).serialize(),
                 success: function () {
                     $('#EditActor').hide();
-                    showActors($('#EditActor :input[name="campId"]').val()); 
+                    showActors($('#EditActor :input[name="filmId"]').val()); 
                     toastr.info($('#EditActor :input[name="name"]').val() + ' Updated');
                 },
                 error: function (data) {

@@ -51,8 +51,33 @@ namespace s00132397DanielShimizu.Models
                     Sex = Sex.Male
                     }
                 }},
-                new Film(){Title = "kjdsrngfa", ReleaseDate = DateTime.Parse("05/06/2014")}
-            };
+                new Film(){Title = "Shawshank Redemption", ReleaseDate = DateTime.Parse("23/09/1994"), Genre = Genre.Drama, 
+                    Actors = new List<Actor>()             
+                {
+                new Actor()
+                    { Name = "Tim Robbins", Sex = Sex.Male},                    
+                    new Actor()
+                    { Name = "Morgan Freeman", Sex = Sex.Male},
+                    new Actor()
+                    { Name = "Bob Gunton",Sex = Sex.Male },
+                    new Actor()
+                   { Name = "Clancy Brown", Sex = Sex.Male }
+                }},  
+             new Film(){Title = "RED", ReleaseDate = DateTime.Parse("29/09/2010"), Genre = Genre.Action, 
+                    Actors = new List<Actor>()             
+                {
+                new Actor()
+                    { Name = "Morgan Freeman", Sex = Sex.Male},                    
+                    new Actor()
+                    { Name = "Bruce Willis", Sex = Sex.Male},
+                    new Actor()
+                    { Name = "John Malcovic",Sex = Sex.Male },
+                    new Actor()
+                   { Name = "Mary-Louise Parker", Sex = Sex.Female },
+                   new Actor()
+                   {Name = "Helen Mirren", Sex= Sex.Female}
+                }}  
+                };
             films.ForEach(flm => context.Films.Add(flm));
             context.SaveChanges();
 
@@ -69,37 +94,37 @@ namespace s00132397DanielShimizu.Models
             : base("FilmDbs")
         { }
     }
-        public class Film
-        {
-            [Key]
-            public int FilmId { get; set; }
-            [Display(Name = "Film Name"), Required]
-            public string Title { get; set; }
+    public class Film
+    {
+        [Key]
+        public int FilmId { get; set; }
+        [Display(Name = "Film Name"), Required]
+        public string Title { get; set; }
 
-            [DisplayName("Released"), DataType(DataType.Date),
-                    DisplayFormat(DataFormatString = "{0:dd/MM/yyy}")]
-            public DateTime ReleaseDate { get; set; }
+        [DisplayName("Released"), DataType(DataType.Date),
+                DisplayFormat(DataFormatString = "{0:dd/MM/yyy}")]
+        public DateTime ReleaseDate { get; set; }
 
-            public Genre Genre { get; set; }
-            public virtual List<Actor> Actors { get; set; }
-
-        }
-        public class Actor
-        {
-            public int ActorId { get; set; }
-            public string Name { get; set; }
-            public Sex Sex { get; set; }
-            public int FilmId { get; set; }
-            public virtual Film Film { get; set; }
-        }
-        public enum Sex
-        {
-            Male, Female
-        }
-
-        public enum Genre
-        {
-            Action, Horror, Comedy, Romance, Thriller
-        }
+        public Genre Genre { get; set; }
+        public virtual List<Actor> Actors { get; set; }
 
     }
+    public class Actor
+    {
+        public int ActorId { get; set; }
+        public string Name { get; set; }
+        public Sex Sex { get; set; }
+        public int FilmId { get; set; }
+        public virtual Film Film { get; set; }
+    }
+    public enum Sex
+    {
+        Male, Female
+    }
+
+    public enum Genre
+    {
+        Action, Horror, Comedy, Romance, Thriller, Drama
+    }
+
+}
