@@ -9,7 +9,7 @@ using System.Web;
 namespace s00132397DanielShimizu.Models
 {
 
-    class CampDbInitialiser : DropCreateDatabaseAlways<FilmDb>
+    class FilmDbInitialiser : DropCreateDatabaseAlways<FilmDb>
     {
         protected override void Seed(FilmDb context)
         {
@@ -50,19 +50,23 @@ namespace s00132397DanielShimizu.Models
                     { Name = "Dave Batista",
                     Sex = Sex.Male
                     }
-                }}
+                }},
+                new Film(){Title = "kjdsrngfa", ReleaseDate = DateTime.Parse("05/06/2014")}
             };
             films.ForEach(flm => context.Films.Add(flm));
             context.SaveChanges();
+
+            base.Seed(context);
         }
     }
+
     class FilmDb : DbContext
     {
         public DbSet<Film> Films { get; set; }
         public DbSet<Actor> Actors { get; set; }
 
         public FilmDb()
-            : base("FilmDb")
+            : base("FilmDbs")
         { }
     }
         public class Film
@@ -71,9 +75,11 @@ namespace s00132397DanielShimizu.Models
             public int FilmId { get; set; }
             [Display(Name = "Film Name"), Required]
             public string Title { get; set; }
+
             [DisplayName("Released"), DataType(DataType.Date),
                     DisplayFormat(DataFormatString = "{0:dd/MM/yyy}")]
             public DateTime ReleaseDate { get; set; }
+
             public Genre Genre { get; set; }
             public virtual List<Actor> Actors { get; set; }
 
